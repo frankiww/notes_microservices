@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  note-service:
+    #собираем образ из Dockerfile
+    build: ./note-service
+    ports:
+      #прокидываем порт 3001 контейнера на 3001 хоста (для доступа извне)
+      - "3001:3001"
+    networks:
+      - micro-net
+
+  comment-service:
+    build: ./comment-service
+    ports:
+      - "3002:3002" 
+    networks:
+      - micro-net
+    depends_on:
+      #сначала запустить контейнер user-service
+      - note-service
+
+networks:
+  micro-net:
+    #создаём отдельную сетевую мостовую среду для этих сервисов
+    driver: bridge
