@@ -19,6 +19,18 @@ services:
     depends_on:
       #сначала запустить контейнер user-service
       - note-service
+    
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - micro-net
+    depends_on:
+      - note-service
+      - comment-service
 
 networks:
   micro-net:
